@@ -2,9 +2,9 @@
 
 ## Development
 
-0. Run `nvm use` (optional) 
+0. Run `nvm use` (optional)
 1. Run `npm i` command
-3. Run `npm start` command
+2. Run `npm start` command
 
 ## Testing
 

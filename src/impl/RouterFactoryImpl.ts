@@ -13,7 +13,7 @@ export class RouterFactoryImpl implements RouterFactory {
 	}
 
 	async createRoutes(app: Express) {
-		this.options.routes.forEach(route => {
+		this.options.routes.forEach((route) => {
 			logger(`creating route ${route.method.toUpperCase()} ${route.path}`);
 			/**
 			 * For each route, we create a new route in the express app
@@ -28,7 +28,7 @@ export class RouterFactoryImpl implements RouterFactory {
 					res.send(await result);
 					verbose("<<", await result);
 				} else if (!!result) {
-					res.json(result)
+					res.json(result);
 					verbose("<<", result);
 				} else {
 					verbose(`No result found for route ${route.method.toUpperCase()} ${route.path}`);

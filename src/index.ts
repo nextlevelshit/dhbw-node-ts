@@ -1,5 +1,5 @@
-import {AppDataSource} from "./data-source"
-import {userRoutes} from "./routes"
+import {AppDataSource} from "./data-source";
+import {userRoutes} from "./routes";
 import {WebApplicationImpl} from "./impl/WebApplicationImpl";
 import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
 import {UserController} from "./controller/UserController";
@@ -15,21 +15,21 @@ const app = new WebApplicationImpl({
 	routerFactories: [
 		new RouterFactoryImpl({
 			controller: new UserController(AppDataSource),
-			routes: userRoutes
-		})
-	]
+			routes: userRoutes,
+		}),
+	],
 });
 
 export const shutdown = () => {
 	logger("shutting down application");
 	app.teardown();
 	process.exit(0);
-}
+};
 
 export const shutDownWithError = (e: Error) => {
 	logger(`Failed to bootstrap application: ${e}`);
 	process.exit(1);
-}
+};
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
