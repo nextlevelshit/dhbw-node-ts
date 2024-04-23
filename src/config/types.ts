@@ -2,7 +2,6 @@ import {Request, Response, NextFunction} from "express";
 import {User} from "../entity/User";
 
 export interface Controller<T> {
-	// protected repository: Repository<any>
 	/**
 	 *
 	 * @param request
@@ -10,7 +9,6 @@ export interface Controller<T> {
 	 * @param next
 	 */
 	all(request: Request, response: Response, next: NextFunction): Promise<T[]>;
-
 	/**
 	 *
 	 * @param request
@@ -18,9 +16,19 @@ export interface Controller<T> {
 	 * @param next
 	 */
 	one(request: Request, response: Response, next: NextFunction): Promise<T | string>;
-
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @param next
+	 */
 	save(request: Request, response: Response, next: NextFunction): Promise<T & Record<string, any>>;
-
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @param next
+	 */
 	remove(request: Request, response: Response, next: NextFunction): Promise<User | string>;
 }
 

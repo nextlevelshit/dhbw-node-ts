@@ -19,14 +19,17 @@ export class RouterFactoryImpl implements RouterFactory {
 			 * For each route, we create a new route in the express app
 			 */
 			app[route.method](route.path, async (req: Request, res: Response, next: NextFunction) => {
+				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
 				const result = this.options.controller[route.action](req, res, next);
 				/**
 				 * If the result is a promise, we wait for it to resolve and then send the result
 				 */
 				if (result instanceof Promise) {
 					res.send(await result);
+					verbose("<<", await result);
 				} else if (!!result) {
 					res.json(result)
+					verbose("<<", result);
 				} else {
 					verbose(`No result found for route ${route.method.toUpperCase()} ${route.path}`);
 					res.status(404).send("Not found");

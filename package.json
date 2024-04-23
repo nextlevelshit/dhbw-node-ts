@@ -8,7 +8,9 @@
       "start": "nodemon",
       "build": "tsc src/index.ts",
       "test": "echo \"Error: no test specified\" && exit 1",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "typeorm": "typeorm-ts-node-commonjs",
+      "lint": "prettier . --check",
+      "lint:fix": "prettier . --write"
    },
    "nodemonConfig": {
       "exec": "ts-node ./src/index.ts",
@@ -25,6 +27,7 @@
       "@types/node": "^16.11.10",
       "debug": "^4.3.4",
       "nodemon": "^3.1.0",
+      "prettier": "^3.2.5",
       "ts-node": "^10.9.2",
       "typeorm": "^0.3.20",
       "typescript": "^5.4.5"
@@ -35,6 +38,5 @@
       "reflect-metadata": "^0.1.13",
       "sqlite3": "^5.0.2",
       "typeorm": "0.3.20"
-   },
-   "type": "commonjs"
+   }
 }
