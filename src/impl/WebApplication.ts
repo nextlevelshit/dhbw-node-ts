@@ -2,8 +2,8 @@ import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
 import express, {Express} from "express";
 import bodyParser from "body-parser";
 import {DataSource} from "typeorm";
-import {BaseRouterFactory} from "./RouterFactory";
 import {debug} from "node:util";
+import {RouterFactory} from "./RouterFactory";
 
 const logger = debug("app:i:web-application");
 const verbose = debug("app:v:web-application");
@@ -12,7 +12,7 @@ export class WebApplicationImpl implements WebApplication {
 	private readonly port: number;
 	private app: Express;
 	private dataSource: DataSource;
-	private routerFactories: BaseRouterFactory[];
+	private routerFactories: RouterFactory[];
 	constructor(options: WebApplicationOptions) {
 		this.port = options.port;
 		this.dataSource = options.data;

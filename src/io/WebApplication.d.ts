@@ -1,11 +1,11 @@
 import {DataSource} from "typeorm";
-import {BaseRouterFactory} from "../impl/RouterFactory";
+import {RouterFactory} from "../impl/RouterFactory";
 
 
 export interface WebApplicationOptions {
 	data: DataSource,
 	port: number,
-	routerFactories: BaseRouterFactory[]
+	routerFactories: RouterFactory[]
 }
 
 export interface WebApplication {

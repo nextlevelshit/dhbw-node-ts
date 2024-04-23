@@ -6,11 +6,12 @@
    "types": "src/index.d.ts",
    "scripts": {
       "start": "nodemon",
+      "build": "tsc src/index.ts",
       "test": "echo \"Error: no test specified\" && exit 1",
-      "typeorm": "typeorm-ts-node-esm"
+      "typeorm": "typeorm-ts-node-commonjs"
    },
    "nodemonConfig": {
-      "exec": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts",
+      "exec": "ts-node src/index.ts",
       "env": {
          "DEBUG": "app*",
          "PORT": 12000
@@ -24,9 +25,9 @@
       "@types/node": "^16.11.10",
       "debug": "^4.3.4",
       "nodemon": "^3.1.0",
-      "ts-node": "10.9.1",
+      "ts-node": "^10.9.2",
       "typeorm": "^0.3.20",
-      "typescript": "4.5.2"
+      "typescript": "^5.4.5"
    },
    "dependencies": {
       "body-parser": "^1.19.1",

@@ -1,17 +1,14 @@
-import express, {Express, Request, Response} from "express"
-import bodyParser from "body-parser"
 import {AppDataSource} from "./data-source.js"
 import {Routes} from "./routes.js"
-import {User} from "./entity/User.js"
 import {WebApplicationImpl} from "./impl/WebApplication";
-import {UserRouterFactory} from "./impl/RouterFactory";
+import {RouterFactoryImpl} from "./impl/RouterFactory";
 import {UserController} from "./controller/UserController";
 
 const app = new WebApplicationImpl({
 	data: AppDataSource,
-	port: 12000,
+	port: 12_000,
 	routerFactories: [
-		new UserRouterFactory(new UserController())
+		new RouterFactoryImpl({controller: new UserController(AppDataSource), routes: Routes})
 	]
 });
 
