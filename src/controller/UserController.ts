@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction} from "express"
-import {User} from "../entity/User.js"
-import {Controller} from "../io/BaseController";
+import {Request} from "express"
+import {User} from "../entity/User"
 import {DataSource, Repository} from "typeorm";
+import {Controller} from "../config/types";
 
 export class UserController implements Controller<User> {
 
@@ -15,7 +15,7 @@ export class UserController implements Controller<User> {
 		return this.repository.find()
 	}
 
-	async one(request: Request, res: Response, next: NextFunction) {
+	async one(request: Request) {
 		const id = parseInt(request.params.id)
 
 
@@ -29,7 +29,7 @@ export class UserController implements Controller<User> {
 		return user
 	}
 
-	async save(request: Request, res: Response, next: NextFunction) {
+	async save(request: Request) {
 		const {firstName, lastName, age} = request.body;
 
 		const user = Object.assign(new User(), {
@@ -41,7 +41,7 @@ export class UserController implements Controller<User> {
 		return this.repository.save(user)
 	}
 
-	async remove(request: Request, res: Response, next: NextFunction) {
+	async remove(request: Request) {
 		const id = parseInt(request.params.id)
 
 		let userToRemove = await this.repository.findOneBy({id})

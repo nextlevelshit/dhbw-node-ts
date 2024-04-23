@@ -1,15 +1,21 @@
 import {DataSource} from "typeorm";
-import {RouterFactory} from "../impl/RouterFactory";
+
+import {RouterFactory} from "./RouterFactory";
 
 
 export interface WebApplicationOptions {
-	data: DataSource,
+	dataSource: DataSource,
 	port: number,
 	routerFactories: RouterFactory[]
 }
 
 export interface WebApplication {
-	bootstrap(): void;
-
+	/**
+	 * Bootstrap the application
+	 */
+	bootstrap(): Promise<void>;
+	/**
+	 * Tear down the application
+	 */
 	teardown(): void;
 }

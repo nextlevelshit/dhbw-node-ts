@@ -1,59 +1,39 @@
-import {AppDataSource} from "./data-source.js"
-import {Routes} from "./routes.js"
-import {WebApplicationImpl} from "./impl/WebApplication";
-import {RouterFactoryImpl} from "./impl/RouterFactory";
+import {AppDataSource} from "./data-source"
+import {userRoutes} from "./routes"
+import {WebApplicationImpl} from "./impl/WebApplicationImpl";
+import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
 import {UserController} from "./controller/UserController";
+import debug from "debug";
+import {port} from "./config/constants";
+
+const logger = debug("app:i:index");
+const verbose = debug("app:v:index");
 
 const app = new WebApplicationImpl({
-	data: AppDataSource,
-	port: 12_000,
+	port,
+	dataSource: AppDataSource,
 	routerFactories: [
-		new RouterFactoryImpl({controller: new UserController(AppDataSource), routes: Routes})
+		new RouterFactoryImpl({
+			controller: new UserController(AppDataSource),
+			routes: userRoutes
+		})
 	]
 });
 
-// AppDataSource.initialize().then(async () => {
-//
-// 	// create express app
-// 	const app = express()
-// 	app.use(bodyParser.json())
-//
-// 	// register express routes from defined application routes
-// 	Routes.forEach(route => {
-// 		(app as Express)[route.method](route.route, (req: Request, res: Response, next: Function) => {
-// 			const result = (new (route.controller as any))[route.action](req, res, next)
-// 			if (result instanceof Promise) {
-// 				result.then(result => result !== null && result !== undefined ? res.send(result) : undefined)
-//
-// 			} else if (result !== null && result !== undefined) {
-// 				res.json(result)
-// 			}
-// 		})
-// 	})
-//
-// 	// setup express app here
-// 	// ...
-//
-// 	// start express server
-// 	app.listen(3000)
-//
-// 	// insert new users for test
-// 	await AppDataSource.manager.save(
-// 		AppDataSource.manager.create(User, {
-// 			firstName: "Timber",
-// 			lastName: "Saw",
-// 			age: 27
-// 		})
-// 	)
-//
-// 	await AppDataSource.manager.save(
-// 		AppDataSource.manager.create(User, {
-// 			firstName: "Phantom",
-// 			lastName: "Assassin",
-// 			age: 24
-// 		})
-// 	)
-//
-// 	console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results")
-//
-// }).catch(error => console.log(error))
+export const shutdown = () => {
+	logger("shutting down application");
+	app.teardown();
+	process.exit(0);
+}
+
+export const shutDownWithError = (e: Error) => {
+	logger(`Failed to bootstrap application: ${e}`);
+	process.exit(1);
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
+
+app.bootstrap()
+	.then(() => verbose("succesfully bootstrap application"))
+	.catch(shutDownWithError);

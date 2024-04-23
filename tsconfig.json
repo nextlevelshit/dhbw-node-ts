@@ -1,13 +1,12 @@
 {
    "compilerOptions": {
       "lib": [
-         "esnext",
-         "esnext"
+         "es5",
+         "es6"
       ],
-      "target": "esnext",
+      "target": "es5",
       "module": "commonjs",
       "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
       "outDir": "./dist",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,

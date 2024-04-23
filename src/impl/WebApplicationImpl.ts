@@ -1,53 +1,45 @@
 import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
 import express, {Express} from "express";
 import bodyParser from "body-parser";
-import {DataSource} from "typeorm";
-import {debug} from "node:util";
-import {RouterFactory} from "./RouterFactory";
+import debug from "debug";
 
 const logger = debug("app:i:web-application");
 const verbose = debug("app:v:web-application");
 
 export class WebApplicationImpl implements WebApplication {
-	private readonly port: number;
 	private app: Express;
-	private dataSource: DataSource;
-	private routerFactories: RouterFactory[];
+	private options: WebApplicationOptions;
+
 	constructor(options: WebApplicationOptions) {
-		this.port = options.port;
-		this.dataSource = options.data;
+		this.options = options;
 	}
 
 	async bootstrap() {
+		verbose("bootstrapping application");
 		await this.bootstrapDataSource();
+		verbose("data source initialized");
 		await this.bootstrapExpress();
 	}
 
 	async bootstrapDataSource() {
 		try {
-			await this.dataSource.initialize();
+			await this.options.dataSource.initialize();
 		} catch(e) {
-			logger("Error initializing data source: %O", e);
+			logger(`Error initializing data source: ${e}`);
 		}
 	}
 
 	protected async bootstrapExpress() {
 		this.app = express();
 		this.app.use(bodyParser.json());
-
-		// register express routes from defined application routes
-		this.routerFactories.forEach(routerFactory => {
-			routerFactory.createRoutes(this.app);
-		});
-
-		// setup express app here
-		// ...
-
-		// start express server
-		this.app.listen(this.port);
+		verbose("added body parser middleware");
+		this.options.routerFactories.forEach(routerFactory => routerFactory.createRoutes(this.app));
+		verbose("added routes to express app");
+		this.app.listen(this.options.port);
+		logger(`app listening on port ${this.options.port}`);
 	}
 
 	teardown() {
-
+		logger("recieved signal to teardown");
 	}
 }

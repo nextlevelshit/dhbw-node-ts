@@ -1,6 +1,6 @@
 import {Route} from "./config/types";
 
-export const Routes: Route[] = [{
+export const userRoutes: Route[] = [{
 	method: "get",
 	path: "/users",
 	action: "all"
