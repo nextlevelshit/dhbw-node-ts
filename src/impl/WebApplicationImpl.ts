@@ -25,21 +25,21 @@ export class WebApplicationImpl implements WebApplication {
 		try {
 			await this.options.dataSource.initialize();
 		} catch (e) {
-			logger(`Error initializing data source: ${e}`);
+			logger(`error initializing data source: ${e}`);
 		}
 	}
 
 	protected async bootstrapExpress() {
 		this.app = express();
 		this.app.use(bodyParser.json());
-		verbose("added body parser middleware");
+		verbose("added json body parser");
 		this.options.routerFactories.forEach((routerFactory) => routerFactory.createRoutes(this.app));
-		verbose("added routes to express app");
+		verbose("added routes");
 		this.app.listen(this.options.port);
 		logger(`app listening on port ${this.options.port}`);
 	}
 
 	teardown() {
-		logger("recieved signal to teardown");
+		logger("...to be or not to be");
 	}
 }
