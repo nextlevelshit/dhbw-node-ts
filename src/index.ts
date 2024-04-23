@@ -8,13 +8,13 @@ const verbose = debug("app:v:index");
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-verbose("starting application");
+verbose("starting");
 
 App.bootstrap()
 	.then(() => {
-		verbose("succesfully started application");
+		verbose("succesfully started");
 	})
 	.catch((e) => {
-		logger(`failed to bootstrap application: ${e}`);
+		logger(`failed to start: ${e}`);
 		shutDownAndFail(e);
 	});

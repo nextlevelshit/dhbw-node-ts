@@ -1,5 +1,5 @@
 import {AppDataSource} from "./AppDataSource";
-import {userRoutes} from "./routes";
+import {userRoutes, partyRoutes} from "./config/routes";
 import {WebApplicationImpl} from "./impl/WebApplicationImpl";
 import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
 import {UserController} from "./controller/UserController";
@@ -20,6 +20,10 @@ export const App = new WebApplicationImpl({
 		new RouterFactoryImpl({
 			controller: new UserController(AppDataSource),
 			routes: userRoutes,
+		}),
+		new RouterFactoryImpl({
+			controller: new UserController(AppDataSource),
+			routes: partyRoutes
 		}),
 	],
 });

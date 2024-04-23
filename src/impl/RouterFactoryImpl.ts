@@ -16,7 +16,7 @@ export class RouterFactoryImpl implements RouterFactory {
 		this.options.routes.forEach((route) => {
 			logger(`creating route ${route.method.toUpperCase()} ${route.path}`);
 			/**
-			 * For each route, we create a new route in the express app
+			 * For each route, we create a new route in the express app based on the method and path.
 			 */
 			app[route.method](route.path, async (req: Request, res: Response, next: NextFunction) => {
 				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
