@@ -5,6 +5,7 @@ import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
 import {UserController} from "./controller/UserController";
 import {port} from "./config/constants";
 import debug from "debug";
+import {User} from "./entity/User";
 
 
 const logger = debug("app:i:app");
@@ -27,6 +28,14 @@ export const App = new WebApplicationImpl({
 		}),
 	],
 });
+
+export const seedDataSource = async () => {
+	verbose("seeding with fake data");
+	await AppDataSource.manager.save(Object.assign(new User(), {id: 1, firstName: "Sr.", lastName: "Hentry", age: 78}));
+	await AppDataSource.manager.save(Object.assign(new User(), {id: 2, firstName: "Jr.", lastName: "Hentry", age: 17}));
+	await AppDataSource.manager.save(Object.assign(new User(), {id: 3, firstName: "Mr.", lastName: "Hentry", age: 45}));
+	await AppDataSource.manager.save(Object.assign(new User(), {id: 4, firstName: "Ms.", lastName: "Hentry", age: 78}));
+}
 
 /**
  * Shutdown the application gracefully

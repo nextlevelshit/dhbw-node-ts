@@ -5,7 +5,8 @@
   "main": "src/App.ts",
   "scripts": {
 	"start": "nodemon",
-	"build": "tsc src/index.ts",
+	"start:prod": "NODE_ENV=production nodemon",
+	"build": "NODE_ENV=production tsc src/index.ts",
 	"test": "echo \"Error: no test specified\" && exit 1",
 	"typeorm": "typeorm-ts-node-commonjs",
 	"lint": "prettier . --check",
@@ -15,7 +16,8 @@
 	"exec": "ts-node ./src/index.ts",
 	"env": {
 	  "DEBUG": "app*",
-	  "PORT": 13000
+	  "PORT": 13000,
+	  "NODE_ENV": "development"
 	},
 	"watch": ["src"]
   },

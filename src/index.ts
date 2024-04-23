@@ -1,5 +1,6 @@
 import debug from "debug";
-import {App, shutdown, shutDownAndFail} from "./App";
+import {App, shutdown, shutDownAndFail, seedDataSource} from "./App";
+import {isDevelopment} from "./config/constants";
 
 
 const logger = debug("app:i:index");
@@ -11,8 +12,11 @@ process.on("SIGTERM", shutdown);
 verbose("starting");
 
 App.bootstrap()
-	.then(() => {
+	.then(async () => {
 		verbose("succesfully started");
+		if (isDevelopment) {
+			await seedDataSource();
+		}
 	})
 	.catch((e) => {
 		logger(`failed to start: ${e}`);
