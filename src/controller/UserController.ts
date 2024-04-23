@@ -22,7 +22,7 @@ export class UserController implements Controller<User> {
 		});
 
 		if (!user) {
-			return "unregistered user";
+			throw new Error("unregistered user");
 		}
 		return user;
 	}
@@ -45,7 +45,7 @@ export class UserController implements Controller<User> {
 		let userToRemove = await this.repository.findOneBy({id});
 
 		if (!userToRemove) {
-			return "this user not exist";
+			throw new Error("this user not exist");
 		}
 
 		await this.repository.remove(userToRemove);

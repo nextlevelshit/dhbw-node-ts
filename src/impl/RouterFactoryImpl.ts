@@ -22,20 +22,12 @@ export class RouterFactoryImpl implements RouterFactory {
 				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
 				try {
 					const result = this.options.controller[route.action](req, res, next);
-					/**
-					 * If the result is a promise, we wait for it to resolve and then send the result
-					 */
-					if (result instanceof Promise) {
-					} else if (!!result) {
-						res.json(result);
-						verbose("<<", result);
-					} else {
-						verbose(`No result found for route ${route.method.toUpperCase()} ${route.path}`);
-						res.status(404).send("Not found");
-					}
+					const body = await result;
+					res.json(body);
+					verbose("<<", body);
 				} catch (e) {
-					logger(e);
-					res.status(500).send(e?.message ?? "Internal server error");
+					logger("||", e.message);
+					res.status(500).send(e.message ?? "Internal server error");
 				}
 			});
 		});
