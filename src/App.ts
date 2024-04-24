@@ -5,6 +5,7 @@ import {UserController} from "./controller/UserController";
 import {port} from "./config/constants";
 import debug from "debug";
 import {User} from "./entity/User";
+import {PartyController} from "./controller/PartyController";
 
 const logger = debug("app:i:app");
 const verbose = debug("app:v:app");
@@ -15,12 +16,12 @@ const verbose = debug("app:v:app");
 export const App = new WebApplicationImpl({
 	port,
 	dataSource: AppDataSource,
-	controllers: [UserController],
+	controllers: [UserController, PartyController],
 	routerFactory: RouterFactoryImpl,
 });
 
 export const seedDataSource = async () => {
-	logger("seeding with fake data");
+	logger("starting to seed data source");
 
 	const usersData = [
 		{id: 1, firstName: "Sr.", lastName: "Henry", age: 78},
@@ -31,7 +32,7 @@ export const seedDataSource = async () => {
 
 	const users = usersData.map((data) => Object.assign(new User(), data));
 
-	verbose("adding fake users", users);
+	verbose("seeding with fake users", users);
 
 	await Promise.all(users.map((user) => AppDataSource.manager.save(user)));
 };

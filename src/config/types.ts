@@ -6,7 +6,6 @@ export declare class BaseController<T> {
 	routes: Route[];
 	repository: Repository<T>;
 
-	// constructor();
 	/**
 	 *
 	 * @param request
@@ -71,5 +70,5 @@ export interface Controller<T> {
 export interface Route {
 	method: "get" | "post" | "put" | "delete";
 	path: string;
-	action: keyof Omit<BaseController<any>, "routes" | "repository">;
+	action: keyof Omit<BaseController<unknown>, "routes" | "repository">;
 }
