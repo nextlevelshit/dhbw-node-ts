@@ -40,6 +40,6 @@ export class WebApplicationImpl implements WebApplication {
 	}
 
 	teardown() {
-		logger("...to be or not to be");
+		logger("to be or not to be ...");
 	}
 }

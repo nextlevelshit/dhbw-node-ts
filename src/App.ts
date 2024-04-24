@@ -30,11 +30,20 @@ export const App = new WebApplicationImpl({
 });
 
 export const seedDataSource = async () => {
-	verbose("seeding with fake data");
-	await AppDataSource.manager.save(Object.assign(new User(), {id: 1, firstName: "Sr.", lastName: "Hentry", age: 78}));
-	await AppDataSource.manager.save(Object.assign(new User(), {id: 2, firstName: "Jr.", lastName: "Hentry", age: 17}));
-	await AppDataSource.manager.save(Object.assign(new User(), {id: 3, firstName: "Mr.", lastName: "Hentry", age: 45}));
-	await AppDataSource.manager.save(Object.assign(new User(), {id: 4, firstName: "Ms.", lastName: "Hentry", age: 78}));
+	logger("seeding with fake data");
+
+	const usersData = [
+		{id: 1, firstName: "Sr.", lastName: "Hentry", age: 78},
+		{id: 2, firstName: "Jr.", lastName: "Hentry", age: 17},
+		{id: 3, firstName: "Mr.", lastName: "Hentry", age: 45},
+		{id: 4, firstName: "Ms.", lastName: "Hentry", age: 78}
+	];
+
+	const users = usersData.map(data =>(Object.assign(new User(), data)));
+
+	verbose("adding fake users", users);
+
+	await Promise.all(users.map(user => AppDataSource.manager.save(user)));
 }
 
 /**
@@ -51,6 +60,7 @@ export const shutdown = () => {
  * @param e Error
  */
 export const shutDownAndFail = (e: Error) => {
-	logger(`failed to bootstrap application: ${e}`);
+	logger("failed to bootstrap application");
+	verbose(e);
 	process.exit(1);
 };

@@ -19,6 +19,7 @@ App.bootstrap()
 		}
 	})
 	.catch((e) => {
-		logger(`failed to start: ${e}`);
+		logger("failed to start");
+		verbose(e);
 		shutDownAndFail(e);
 	});
