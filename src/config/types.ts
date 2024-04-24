@@ -26,7 +26,11 @@ export declare class BaseController<T> {
 	 * @param response
 	 * @param next
 	 */
-	save(request: Request, response: Response, next: NextFunction): Promise<T & Record<string, any>>;
+	save(
+		request: Request,
+		response: Response,
+		next: NextFunction,
+	): Promise<T & Record<string, any>>;
 	/**
 	 *
 	 * @param request
@@ -57,14 +61,22 @@ export interface Controller<T> {
 	 * @param response
 	 * @param next
 	 */
-	save(request: Request, response: Response, next: NextFunction): Promise<T & Record<string, any>>;
+	save(
+		request: Request,
+		response: Response,
+		next: NextFunction,
+	): Promise<T & Record<string, any>>;
 	/**
 	 *
 	 * @param request
 	 * @param response
 	 * @param next
 	 */
-	remove(request: Request, response: Response, next: NextFunction): Promise<User | string>;
+	remove(
+		request: Request,
+		response: Response,
+		next: NextFunction,
+	): Promise<User | string>;
 }
 
 export interface Route {

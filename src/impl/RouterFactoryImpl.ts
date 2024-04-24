@@ -18,12 +18,12 @@ export class RouterFactoryImpl implements RouterFactory {
 			/**
 			 * For each route, we create a new route in the express app based on the method and path.
 			 */
-			app[route.method](route.path, async (req: Request, res: Response, next: NextFunction) => {
+			app[route.method](route.path, async (req, res, next) => {
 				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
 				try {
 					const result = await this.options[route.action](req, res, next);
-					res.json(result);
 					verbose("<<", result);
+					res.json(result);
 				} catch (e) {
 					logger("||", e.message);
 					res.status(500).send(e.message ?? "Internal server error");

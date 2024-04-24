@@ -50,7 +50,7 @@
 		"singleQuote": false,
 		"bracketSpacing": false,
 		"trailingComma": "all",
-		"printWidth": 120,
+		"printWidth": 90,
 		"arrowParens": "always"
 	},
 	"type": "commonjs"

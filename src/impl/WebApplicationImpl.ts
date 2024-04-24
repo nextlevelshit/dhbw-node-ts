@@ -34,7 +34,9 @@ export class WebApplicationImpl implements WebApplication {
 		this.app.use(bodyParser.json());
 		verbose("added json body parser");
 		this.options.controllers.forEach((controller) => {
-			new this.options.routerFactory(new controller(this.options.dataSource)).createRoutes(this.app);
+			new this.options.routerFactory(
+				new controller(this.options.dataSource),
+			).createRoutes(this.app);
 		});
 		verbose("added routes");
 		this.app.listen(this.options.port);
@@ -42,7 +44,7 @@ export class WebApplicationImpl implements WebApplication {
 	}
 
 	async teardown() {
-		logger("tearing down application");
+		verbose("closing data source connection");
 		await this.options.dataSource.destroy();
 	}
 }
