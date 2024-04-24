@@ -2,7 +2,6 @@ import debug from "debug";
 import {App, shutdown, shutDownAndFail, seedDataSource} from "./App";
 import {isDevelopment} from "./config/constants";
 
-
 const logger = debug("app:i:index");
 const verbose = debug("app:v:index");
 
