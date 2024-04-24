@@ -32,10 +32,10 @@ export const seedDataSource = async () => {
 	logger("seeding with fake data");
 
 	const usersData = [
-		{id: 1, firstName: "Sr.", lastName: "Hentry", age: 78},
-		{id: 2, firstName: "Jr.", lastName: "Hentry", age: 17},
-		{id: 3, firstName: "Mr.", lastName: "Hentry", age: 45},
-		{id: 4, firstName: "Ms.", lastName: "Hentry", age: 78},
+		{id: 1, firstName: "Sr.", lastName: "Henry", age: 78},
+		{id: 2, firstName: "Jr.", lastName: "Henry", age: 17},
+		{id: 3, firstName: "Mr.", lastName: "Henry", age: 45},
+		{id: 4, firstName: "Ms.", lastName: "Henry", age: 78},
 	];
 
 	const users = usersData.map((data) => Object.assign(new User(), data));
@@ -49,16 +49,15 @@ export const seedDataSource = async () => {
  * Shutdown the application gracefully
  */
 export const shutdown = () => {
-	verbose(">> SIGINT/SIGTERM shutting down...");
-	App.teardown();
-	process.exit(0);
+	verbose(">> SIGINT/SIGTERM");
+	App.teardown().then(() => process.exit(0)).catch(failOnShutdown);
 };
 
 /**
  * Shutdown the application and fail
  * @param e Error
  */
-export const shutDownAndFail = (e: Error) => {
+export const failOnShutdown = (e: Error) => {
 	logger("failed to bootstrap application");
 	verbose(e);
 	process.exit(1);

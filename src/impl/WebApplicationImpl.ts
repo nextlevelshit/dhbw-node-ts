@@ -21,7 +21,7 @@ export class WebApplicationImpl implements WebApplication {
 		await this.bootstrapExpress();
 	}
 
-	async bootstrapDataSource() {
+	private async bootstrapDataSource() {
 		try {
 			await this.options.dataSource.initialize();
 		} catch (e) {
@@ -29,7 +29,7 @@ export class WebApplicationImpl implements WebApplication {
 		}
 	}
 
-	protected async bootstrapExpress() {
+	private async bootstrapExpress() {
 		this.app = express();
 		this.app.use(bodyParser.json());
 		verbose("added json body parser");
@@ -39,7 +39,8 @@ export class WebApplicationImpl implements WebApplication {
 		logger(`app listening on port ${this.options.port}`);
 	}
 
-	teardown() {
-		logger("to be or not to be ...");
+	async teardown() {
+		logger("tearing down application");
+		await this.options.dataSource.destroy();
 	}
 }

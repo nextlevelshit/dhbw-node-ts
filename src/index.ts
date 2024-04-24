@@ -1,5 +1,5 @@
 import debug from "debug";
-import {App, shutdown, shutDownAndFail, seedDataSource} from "./App";
+import {App, shutdown, failOnShutdown, seedDataSource} from "./App";
 import {isDevelopment} from "./config/constants";
 
 const logger = debug("app:i:index");
@@ -20,5 +20,5 @@ App.bootstrap()
 	.catch((e) => {
 		logger("failed to start");
 		verbose(e);
-		shutDownAndFail(e);
+		failOnShutdown(e);
 	});
