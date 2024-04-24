@@ -1,11 +1,15 @@
 import {DataSource} from "typeorm";
 
-import {RouterFactory} from "./RouterFactory";
+import {RouterFactory, RouterFactoryOptions} from "./RouterFactory";
+import {BaseController, Controller} from "../config/types";
+import {RouterFactoryImpl} from "../impl/RouterFactoryImpl";
+import {UserController} from "../controller/UserController";
 
 export interface WebApplicationOptions {
 	dataSource: DataSource;
 	port: number;
-	routerFactories: RouterFactory[];
+	routerFactory: new (options: RouterFactoryOptions) => RouterFactory;
+	controllers: (new (dataSource: DataSource) => BaseController<any>)[];
 }
 
 export interface WebApplication {

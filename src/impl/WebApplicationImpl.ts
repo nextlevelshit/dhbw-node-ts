@@ -33,7 +33,12 @@ export class WebApplicationImpl implements WebApplication {
 		this.app = express();
 		this.app.use(bodyParser.json());
 		verbose("added json body parser");
-		this.options.routerFactories.forEach((routerFactory) => routerFactory.createRoutes(this.app));
+		this.options.controllers.forEach((_controller) => {
+			const controller = new _controller(this.options.dataSource);
+			new this.options.routerFactory(controller).createRoutes(this.app);
+		});
+
+		// this.options.routerFactories.forEach((routerFactory) => routerFactory.createRoutes(this.app));
 		verbose("added routes");
 		this.app.listen(this.options.port);
 		logger(`app listening on port ${this.options.port}`);

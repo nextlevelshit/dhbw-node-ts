@@ -21,10 +21,9 @@ export class RouterFactoryImpl implements RouterFactory {
 			app[route.method](route.path, async (req: Request, res: Response, next: NextFunction) => {
 				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
 				try {
-					const result = this.options.controller[route.action](req, res, next);
-					const body = await result;
-					res.json(body);
-					verbose("<<", body);
+					const result = await this.options[route.action](req, res, next);
+					res.json(result);
+					verbose("<<", result);
 				} catch (e) {
 					logger("||", e.message);
 					res.status(500).send(e.message ?? "Internal server error");

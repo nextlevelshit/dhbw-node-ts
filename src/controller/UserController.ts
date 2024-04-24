@@ -1,13 +1,36 @@
 import {Request} from "express";
 import {User} from "../entity/User";
 import {DataSource, Repository} from "typeorm";
-import {Controller} from "../config/types";
+import {Route, BaseController} from "../config/types";
 
-export class UserController implements Controller<User> {
-	protected repository: Repository<User>;
+export class UserController implements BaseController<User> {
+	routes: Route[];
+	repository: Repository<User>;
 
 	constructor(appDataSource: DataSource) {
 		this.repository = appDataSource.getRepository(User);
+		this.routes = [
+			{
+				path: "/users",
+				method: "get",
+				action: "all",
+			},
+			{
+				path: "/users/:id",
+				method: "get",
+				action: "one",
+			},
+			{
+				path: "/users",
+				method: "post",
+				action: "save",
+			},
+			{
+				path: "/users/:id",
+				method: "delete",
+				action: "remove",
+			},
+		];
 	}
 
 	async all() {

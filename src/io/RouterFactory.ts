@@ -1,17 +1,7 @@
 import {Express} from "express";
-import {Controller, Route} from "../config/types";
+import {BaseController} from "../config/types";
 
-export interface RouterFactoryOptions {
-	/**
-	 * The controller that this factory will use
-	 */
-	controller: Controller<any>;
-	/**
-	 * The routes that this factory will create
-	 */
-	routes: Route[];
-}
-
+export type RouterFactoryOptions = BaseController<any>;
 export interface RouterFactory {
 	/**
 	 * The options for this factory

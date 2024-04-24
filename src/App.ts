@@ -1,5 +1,4 @@
 import {AppDataSource} from "./AppDataSource";
-import {userRoutes, partyRoutes} from "./config/routes";
 import {WebApplicationImpl} from "./impl/WebApplicationImpl";
 import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
 import {UserController} from "./controller/UserController";
@@ -16,16 +15,8 @@ const verbose = debug("app:v:app");
 export const App = new WebApplicationImpl({
 	port,
 	dataSource: AppDataSource,
-	routerFactories: [
-		new RouterFactoryImpl({
-			controller: new UserController(AppDataSource),
-			routes: userRoutes,
-		}),
-		new RouterFactoryImpl({
-			controller: new UserController(AppDataSource),
-			routes: partyRoutes,
-		}),
-	],
+	controllers: [UserController],
+	routerFactory: RouterFactoryImpl,
 });
 
 export const seedDataSource = async () => {
@@ -50,7 +41,9 @@ export const seedDataSource = async () => {
  */
 export const shutdown = () => {
 	verbose(">> SIGINT/SIGTERM");
-	App.teardown().then(() => process.exit(0)).catch(failOnShutdown);
+	App.teardown()
+		.then(() => process.exit(0))
+		.catch(failOnShutdown);
 };
 
 /**
