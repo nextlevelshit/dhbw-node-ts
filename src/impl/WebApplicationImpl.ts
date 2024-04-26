@@ -22,8 +22,8 @@ export class WebApplicationImpl implements WebApplication {
 	}
 
 	async teardown() {
-		await this.teardownDataSource();
 		this.teardownExpress();
+		await this.teardownDataSource();
 	}
 
 	private async bootstrapDataSource() {
