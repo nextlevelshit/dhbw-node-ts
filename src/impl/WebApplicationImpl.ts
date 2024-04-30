@@ -1,5 +1,5 @@
-import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
-import express, {Express} from "express";
+import {WebApplication, WebApplicationOptions, WebRoute} from "../io/WebApplication";
+import express, {Express, Request, Response, NextFunction} from "express";
 import bodyParser from "body-parser";
 import debug from "debug";
 import {Server} from "node:net";
@@ -41,13 +41,6 @@ export class WebApplicationImpl implements WebApplication {
 		this.app = express();
 		this.app.use(bodyParser.json());
 		logger("added json body parser");
-		this.options.controllers.forEach((controller) => {
-			const instance = new controller(this.options.dataSource);
-			new this.options.routerFactory(
-				instance,
-			).createRoutes/*for*/(this.app);
-		});
-		logger("added routes");
 		this.server = this.app.listen(this.options.port);
 		logger(`app listening on port ${this.options.port}`);
 	}
@@ -60,5 +53,27 @@ export class WebApplicationImpl implements WebApplication {
 	private teardownExpress() {
 		this.server.close();
 		verbose("closed server connection gracefully");
+	}
+
+	attachRoutes(routes: WebRoute[]) {
+		if (!routes) {
+			logger("no routes to attach");
+			return;
+		}
+
+		routes.forEach((route) => {
+			logger(`creating route ${route.method.toUpperCase()} ${route.path}`);
+			this.app[route.method](route.path, async (req: Request, res: Response) => {
+				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
+				try {
+					const result = await route.action(req, res);
+					verbose("<<", result);
+					res.json(result);
+				} catch (e) {
+					logger("||", e.message);
+					res.status(500).send(e.message ?? "Internal server error");
+				}
+			});
+		});
 	}
 }

@@ -1,15 +1,16 @@
 import {DataSource} from "typeorm";
 
-import {RouterFactory, RouterFactoryOptions} from "./RouterFactory";
-import {BaseController, Controller} from "../config/types";
-import {RouterFactoryImpl} from "../impl/RouterFactoryImpl";
-import {UserController} from "../controller/UserController";
+import {Request, Response} from "express";
 
 export interface WebApplicationOptions {
 	dataSource: DataSource;
 	port: number;
-	routerFactory: new (options: RouterFactoryOptions) => RouterFactory;
-	controllers: (new (dataSource: DataSource) => BaseController<any>)[];
+}
+
+export interface WebRoute {
+	method: "get" | "post" | "put" | "delete";
+	path: string;
+	action: (req: Request, res: Response) => Promise<unknown>;
 }
 
 export interface WebApplication {
@@ -17,8 +18,14 @@ export interface WebApplication {
 	 * Bootstrap the application
 	 */
 	bootstrap(): Promise<void>;
+
 	/**
 	 * Tear down the application
 	 */
 	teardown(): void;
+
+	/**
+	 * Mount routes to express application
+	 */
+	attachRoutes(routes: WebRoute[]): void
 }

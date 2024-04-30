@@ -1,11 +1,8 @@
+import debug from "debug";
 import {AppDataSource} from "./AppDataSource";
 import {WebApplicationImpl} from "./impl/WebApplicationImpl";
-import {RouterFactoryImpl} from "./impl/RouterFactoryImpl";
-import {UserController} from "./controller/UserController";
 import {port} from "./config/constants";
-import debug from "debug";
 import {User} from "./entity/User";
-import {PartyController} from "./controller/PartyController";
 
 const logger = debug("app:i:app");
 const verbose = debug("app:v:app");
@@ -16,8 +13,6 @@ const verbose = debug("app:v:app");
 export const App = new WebApplicationImpl({
 	port,
 	dataSource: AppDataSource,
-	controllers: [UserController, PartyController],
-	routerFactory: RouterFactoryImpl,
 });
 
 export const seedDataSource = async () => {

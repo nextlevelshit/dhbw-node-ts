@@ -1,42 +1,32 @@
 import {Request} from "express";
 import {User} from "../entity/User";
 import {DataSource, Repository} from "typeorm";
-import {Route, BaseController} from "../config/types";
+import {RouteController} from "../config/types";
+import {Controller} from "../decorator/Controller";
+import {Get} from "../decorator/Get";
+import {Post} from "../decorator/Post";
+import {Delete} from "../decorator/Delete";
+import {Put} from "../decorator/Put";
 
-export class UserController implements BaseController<User> {
-	routes: Route[];
+@Controller("/users")
+export class UserController implements RouteController<User> {
 	repository: Repository<User>;
 
 	constructor(appDataSource: DataSource) {
 		this.repository = appDataSource.getRepository(User);
-		this.routes = [
-			{
-				path: "/users",
-				method: "get",
-				action: "all",
-			},
-			{
-				path: "/users/:id",
-				method: "get",
-				action: "one",
-			},
-			{
-				path: "/users",
-				method: "post",
-				action: "save",
-			},
-			{
-				path: "/users/:id",
-				method: "delete",
-				action: "remove",
-			},
-		];
 	}
 
+	@Get("/info")
+	async info() {
+		return this.repository.count();
+	}
+
+	@Get("/")
 	async all() {
 		return this.repository.find();
 	}
 
+	@Get("/:id")
 	async one(request: Request) {
 		const id = parseInt(request.params.id);
 
@@ -50,6 +40,7 @@ export class UserController implements BaseController<User> {
 		return user;
 	}
 
+	@Post("/save")
 	async save(request: Request) {
 		const {firstName, lastName, age} = request.body;
 
@@ -62,6 +53,25 @@ export class UserController implements BaseController<User> {
 		return this.repository.save(user);
 	}
 
+	@Put("/:id")
+	async update(request: Request) {
+		const id = parseInt(request.params.id);
+		const {firstName, lastName, age} = request.body;
+
+		let userToUpdate = await this.repository.findOneBy({id});
+
+		if (!userToUpdate) {
+			throw new Error("this user not exist");
+		}
+
+		userToUpdate.firstName = firstName;
+		userToUpdate.lastName = lastName;
+		userToUpdate.age = age;
+
+		return this.repository.save(userToUpdate);
+	}
+
+	@Delete("/:id")
 	async remove(request: Request) {
 		const id = parseInt(request.params.id);
 

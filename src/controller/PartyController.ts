@@ -1,25 +1,37 @@
-import {DataSource} from "typeorm";
-import {UserController} from "./UserController";
+import {DataSource, Repository} from "typeorm";
+import {Controller} from "../decorator/Controller";
+import {Get} from "../decorator/Get";
+import {RouteController} from "../config/types";
+import {User} from "../entity/User";
 
-export class PartyController extends UserController {
+@Controller("/party")
+export class PartyController implements RouteController<User> {
+	repository: Repository<User>;
+
 	constructor(appDataSource: DataSource) {
-		super(appDataSource);
-		this.routes = [
-			{
-				path: "/party",
-				method: "get",
-				action: "all",
-			},
-			{
-				path: "/party-all-night-long",
-				method: "get",
-				action: "all",
-			},
-			{
-				path: "/party/:id",
-				method: "get",
-				action: "one",
-			},
-		];
+		this.repository = appDataSource.getRepository(User);
+	}
+
+	@Get("/techno")
+	allTechno(){
+		return {
+			parties: [
+				{
+					name: "techno party",
+					location: "Berlin",
+					date: "2020-01-01"
+				},
+				{
+					name: "techno party",
+					location: "Berlin",
+					date: "2020-01-01"
+				},
+				{
+					name: "techno party",
+					location: "Berlin",
+					date: "2020-01-01"
+				}
+			]
+		}
 	}
 }
