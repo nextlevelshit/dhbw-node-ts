@@ -8,6 +8,7 @@
 		"start:prod": "NODE_ENV=production DEBUG=app:i* ts-node ./src/index.ts",
 		"build": "NODE_ENV=production tsc src/index.ts",
 		"test": "jest",
+		"test:watch": "jest --watchAll",
 		"typeorm": "typeorm-ts-node-commonjs",
 		"lint": "prettier . --check",
 		"lint:fix": "prettier . --write"
