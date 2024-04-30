@@ -36,7 +36,7 @@ export const seedDataSource = async () => {
  * Shutdown the application gracefully
  */
 export const shutdown = () => {
-	verbose(">> SIGINT/SIGTERM");
+	verbose("> SIGINT/SIGTERM");
 	App.teardown()
 		.then(() => process.exit(0))
 		.catch(failOnShutdown);

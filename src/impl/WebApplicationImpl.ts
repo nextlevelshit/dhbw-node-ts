@@ -1,8 +1,9 @@
-import {WebApplication, WebApplicationOptions, WebRoute} from "../io/WebApplication";
-import express, {Express, Request, Response, NextFunction} from "express";
+import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
+import express, {Express} from "express";
 import bodyParser from "body-parser";
 import debug from "debug";
 import {Server} from "node:net";
+import {Route, RouteController} from "../config/types";
 
 const logger = debug("app:i:web-application");
 const verbose = debug("app:v:web-application");
@@ -16,11 +17,17 @@ export class WebApplicationImpl implements WebApplication {
 		this.options = options;
 	}
 
+	/**
+	 * Bootstrap the application
+	 */
 	async bootstrap() {
 		await this.bootstrapDataSource();
 		await this.bootstrapExpress();
 	}
 
+	/**
+	 * Tear down the application
+	 */
 	async teardown() {
 		this.teardownExpress();
 		await this.teardownDataSource();
@@ -30,17 +37,19 @@ export class WebApplicationImpl implements WebApplication {
 		verbose("initializing data source");
 		try {
 			await this.options.dataSource.initialize();
-			verbose("initialized data source successfully")
+			verbose("initialized data source successfully");
 		} catch (e) {
 			logger(`error initializing data source: ${e}`);
 		}
 	}
 
 	private async bootstrapExpress() {
-		verbose("bootstrapping application");
 		this.app = express();
+		verbose("bootstrapping application");
 		this.app.use(bodyParser.json());
 		logger("added json body parser");
+		this.app.set("x-powered-by", false);
+		logger("removed x-powered-by header");
 		this.server = this.app.listen(this.options.port);
 		logger(`app listening on port ${this.options.port}`);
 	}
@@ -55,7 +64,11 @@ export class WebApplicationImpl implements WebApplication {
 		verbose("closed server connection gracefully");
 	}
 
-	attachRoutes(routes: WebRoute[]) {
+	/**
+	 * Attach routes to the express application
+	 * @param routes - The routes to attach
+	 */
+	attachRoutes(routes: Route[], controller: RouteController<unknown>) {
 		if (!routes) {
 			logger("no routes to attach");
 			return;
@@ -63,11 +76,11 @@ export class WebApplicationImpl implements WebApplication {
 
 		routes.forEach((route) => {
 			logger(`creating route ${route.method.toUpperCase()} ${route.path}`);
-			this.app[route.method](route.path, async (req: Request, res: Response) => {
-				verbose(`>> ${route.method.toUpperCase()} ${route.path}`);
+			this.app[route.method](route.path, async (req, res) => {
+				verbose(`> ${route.method.toUpperCase()} ${route.path}`);
 				try {
-					const result = await route.action(req, res);
-					verbose("<<", result);
+					const result = await controller[route.action](req, res);
+					verbose("<", result);
 					res.json(result);
 				} catch (e) {
 					logger("||", e.message);

@@ -1,16 +1,9 @@
 import {DataSource} from "typeorm";
-
-import {Request, Response} from "express";
+import {Route, RouteController} from "../config/types";
 
 export interface WebApplicationOptions {
 	dataSource: DataSource;
 	port: number;
-}
-
-export interface WebRoute {
-	method: "get" | "post" | "put" | "delete";
-	path: string;
-	action: (req: Request, res: Response) => Promise<unknown>;
 }
 
 export interface WebApplication {
@@ -27,5 +20,5 @@ export interface WebApplication {
 	/**
 	 * Mount routes to express application
 	 */
-	attachRoutes(routes: WebRoute[]): void
+	attachRoutes(routes: Route[], controller: RouteController<unknown>): void;
 }

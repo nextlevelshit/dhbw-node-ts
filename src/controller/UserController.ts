@@ -10,7 +10,7 @@ import {Put} from "../decorator/Put";
 
 @Controller("/users")
 export class UserController implements RouteController<User> {
-	repository: Repository<User>;
+	readonly repository: Repository<User>;
 
 	constructor(appDataSource: DataSource) {
 		this.repository = appDataSource.getRepository(User);

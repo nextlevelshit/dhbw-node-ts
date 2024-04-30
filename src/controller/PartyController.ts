@@ -13,25 +13,48 @@ export class PartyController implements RouteController<User> {
 	}
 
 	@Get("/techno")
-	allTechno(){
+	allTechno() {
 		return {
 			parties: [
 				{
-					name: "techno party",
+					name: "Techno Party",
 					location: "Berlin",
-					date: "2020-01-01"
+					date: "2024-05-20",
 				},
 				{
-					name: "techno party",
+					name: "Techno Party",
 					location: "Berlin",
-					date: "2020-01-01"
+					date: "2024-05-29",
 				},
 				{
-					name: "techno party",
+					name: "Techno Party",
 					location: "Berlin",
-					date: "2020-01-01"
-				}
-			]
-		}
+					date: "2024-05-23",
+				},
+			],
+		};
+	}
+
+	@Get("/dnb")
+	allDnb() {
+		return {
+			parties: [
+				{
+					name: "Drum and Bass Party",
+					location: "Bristol (UK)",
+					date: "2024-08-13",
+				},
+				{
+					name: "Drum and Bass Party",
+					location: "Heidelberg",
+					date: "2024-06-01",
+				},
+				{
+					name: "Drum and Bass Party",
+					location: "Heidelberg",
+					date: "2024-04-11",
+				},
+			],
+		};
 	}
 }
