@@ -14,7 +14,7 @@ export interface RouteController<T> {
 	 * @param response - The express response object.
 	 * @returns A promise that resolves to an array of T.
 	 */
-	all?(request: Request, response: Response): Promise<T[]>;
+	all?(request: Request, response: Response): Promise<T[] | string>;
 
 	/**
 	 * Fetches a single instance of T.
@@ -32,7 +32,10 @@ export interface RouteController<T> {
 	 * @param response - The express response object.
 	 * @returns A promise that resolves to the saved instance of T.
 	 */
-	save?(request: Request, response: Response): Promise<T & Record<string, any>>;
+	save?(
+		request: Request,
+		response: Response,
+	): Promise<(T & Record<string, any>) | string>;
 
 	/**
 	 * Removes an instance of T.

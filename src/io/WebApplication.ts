@@ -1,5 +1,6 @@
 import {DataSource} from "typeorm";
 import {Route, RouteController} from "../config/types";
+import {Express} from "express";
 
 export interface WebApplicationOptions {
 	dataSource: DataSource;
@@ -7,6 +8,7 @@ export interface WebApplicationOptions {
 }
 
 export interface WebApplication {
+	get express(): Express;
 	/**
 	 * Bootstrap the application
 	 */

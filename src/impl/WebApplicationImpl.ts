@@ -13,6 +13,10 @@ export class WebApplicationImpl implements WebApplication {
 	private options: WebApplicationOptions;
 	private server: Server;
 
+	get express(): Express {
+		return this.app;
+	}
+
 	constructor(options: WebApplicationOptions) {
 		this.options = options;
 	}
