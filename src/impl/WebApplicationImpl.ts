@@ -87,7 +87,7 @@ export class WebApplicationImpl implements WebApplication {
 					verbose("<", result);
 					res.json(result);
 				} catch (e) {
-					logger("||", e.message);
+					logger("|", e.message);
 					res.status(500).send(e.message ?? "Internal server error");
 				}
 			});

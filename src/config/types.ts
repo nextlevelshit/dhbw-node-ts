@@ -6,7 +6,7 @@ import {Repository} from "typeorm";
  * It provides basic CRUD operations.
  */
 export interface RouteController<T> {
-	readonly repository: Repository<T>;
+	readonly repository?: Repository<T>;
 	/**
 	 * Fetches all instances of T.
 	 *
@@ -45,6 +45,7 @@ export interface RouteController<T> {
 	 * @returns A promise that resolves to the removed instance of T or a string.
 	 */
 	remove?(request: Request, response: Response): Promise<T | string>;
+
 }
 
 /**
