@@ -46,6 +46,7 @@ export interface RouteController<T> {
 	 */
 	remove?(request: Request, response: Response): Promise<T | string>;
 
+	[key: string]: any;
 }
 
 /**

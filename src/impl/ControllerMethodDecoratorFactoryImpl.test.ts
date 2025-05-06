@@ -11,8 +11,7 @@ describe("ControllerMethodDecoratorFactoryImpl", () => {
 		@Controller("/delete")
 		class MockController {
 			@Delete("/:id")
-			remove() {
-			}
+			remove() {}
 		}
 
 		const routes = Reflect.getMetadata(routesKey, MockController.constructor);
@@ -29,8 +28,7 @@ describe("ControllerMethodDecoratorFactoryImpl", () => {
 		@Controller("/custom")
 		class MockController {
 			@Delete("/custom")
-			remove() {
-			}
+			remove() {}
 		}
 
 		const routes = Reflect.getMetadata(routesKey, MockController.constructor);
@@ -47,8 +45,7 @@ describe("ControllerMethodDecoratorFactoryImpl", () => {
 		@Controller("/post")
 		class MockController {
 			@Post("/")
-			create() {
-			}
+			create() {}
 		}
 
 		const routes = Reflect.getMetadata(routesKey, MockController.constructor);
@@ -65,8 +62,7 @@ describe("ControllerMethodDecoratorFactoryImpl", () => {
 		@Controller("/put")
 		class MockController {
 			@Put("/:id")
-			update() {
-			}
+			update() {}
 		}
 
 		const routes = Reflect.getMetadata(routesKey, MockController.constructor);
@@ -83,8 +79,7 @@ describe("ControllerMethodDecoratorFactoryImpl", () => {
 		@Controller("/get")
 		class MockController {
 			@Get("/")
-			read() {
-			}
+			read() {}
 		}
 
 		const routes = Reflect.getMetadata(routesKey, MockController.constructor);

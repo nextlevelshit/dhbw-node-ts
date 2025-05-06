@@ -5,7 +5,7 @@
 1. Run `nvm use` (optional)
 2. Run `npm i`
 3. Run `npm start`
-3. Run `npm start:prod` for production
+4. Run `npm start:prod` for production
 
 ## Testing
 
