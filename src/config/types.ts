@@ -52,7 +52,7 @@ export interface RouteController<T> {
 /**
  * RouteMethod is a type for HTTP methods.
  */
-export type RouteMethod = "get" | "post" | "put" | "delete";
+export type RouteMethod = "get" | "post" | "put" | "patch" | "delete" | "all";
 
 /**
  * Route is an interface for routes.

@@ -23,6 +23,11 @@ App.bootstrap()
 				path: "/test",
 			},
 			{
+				action: "echo",
+				method: "all",
+				path: "/echo",
+			},
+			{
 				action: "getByName",
 				method: "get",
 				path: "/test/:name",
