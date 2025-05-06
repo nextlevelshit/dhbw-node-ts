@@ -58,7 +58,7 @@ describe("WebApplicationImpl", () => {
 
 	describe("attachRoutes", () => {
 		it("should attach routes to the application", async () => {
-			app.attachRoutes(routes, controllerMock);
+			app.attachRoutes(controllerMock, routes);
 			controllerMock.all.mockResolvedValue("Hello, World!");
 
 			const response = await request(app.express).get("/");

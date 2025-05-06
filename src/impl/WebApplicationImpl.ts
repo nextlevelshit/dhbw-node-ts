@@ -11,16 +11,13 @@ const error = debug("app:e:web-application");
 
 export class WebApplicationImpl implements WebApplication {
 	private app: Express;
-	private options: WebApplicationOptions;
 	private server: Server;
 
 	get express(): Express {
 		return this.app;
 	}
 
-	constructor(options: WebApplicationOptions) {
-		this.options = options;
-	}
+	constructor(private options: WebApplicationOptions) {}
 
 	/**
 	 * Bootstrap the application
@@ -35,10 +32,18 @@ export class WebApplicationImpl implements WebApplication {
 	 */
 	async teardown() {
 		this.teardownExpress();
+		if (!this.options.dataSource) {
+			verbose("no data source to close");
+			return;
+		}
 		await this.teardownDataSource();
 	}
 
 	private async bootstrapDataSource() {
+		if (!this.options.dataSource) {
+			verbose("no data source to initialize");
+			return;
+		}
 		verbose("initializing data source");
 		try {
 			await this.options.dataSource.initialize();
@@ -69,10 +74,10 @@ export class WebApplicationImpl implements WebApplication {
 
 	/**
 	 * Attach routes to the express application
-	 * @param routes - The routes to attach
 	 * @param controller
+	 * @param routes - The routes to attach
 	 */
-	attachRoutes(routes: Route[], controller: RouteController<unknown>) {
+	attachRoutes(controller: RouteController<unknown>, routes: Route[]) {
 		if (!routes) {
 			logger("no routes to attach");
 			return;

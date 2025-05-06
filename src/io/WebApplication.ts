@@ -3,7 +3,7 @@ import {Route, RouteController} from "../config/types";
 import {Express} from "express";
 
 export interface WebApplicationOptions {
-	dataSource: DataSource;
+	dataSource?: DataSource;
 	port: number;
 }
 

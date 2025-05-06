@@ -21,7 +21,11 @@
 			"NODE_ENV": "development"
 		},
 		"watch": [
-			"src"
+			"./src/**/*.ts"
+		],
+		"ignore": [
+			"src/**/*.spec.ts",
+			"src/**/*.test.ts"
 		]
 	},
 	"author": "",
