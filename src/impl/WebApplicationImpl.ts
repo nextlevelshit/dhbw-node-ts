@@ -1,5 +1,5 @@
 import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
-import express, {Request, Response} from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import debug from "debug";
 import {Server} from "node:net";
@@ -93,17 +93,20 @@ export class WebApplicationImpl implements WebApplication {
 
 		logger(`creating ${routes.length} routes`);
 		routes.forEach((route) => {
-			this.app![route.method](route.path, async (req: Request, res: Response) => {
-				verbose(`> ${route.method.toUpperCase()} ${route.path}`);
-				try {
-					const result = await controller[route.action](req, res);
-					verbose("<", result);
-					res.json(result);
-				} catch (e: any) {
-					error("|", e?.message);
-					res.status(500).send(e.message ?? "Internal server error");
-				}
-			});
+			this.app![route.method](
+				route.path,
+				async (req: express.Request, res: express.Response) => {
+					verbose(`> ${route.method.toUpperCase()} ${route.path}`);
+					try {
+						const result = await controller[route.action](req, res);
+						verbose("<", result);
+						res.json(result);
+					} catch (e: any) {
+						error("|", e?.message);
+						res.status(500).send(e.message ?? "Internal server error");
+					}
+				},
+			);
 		});
 	}
 }

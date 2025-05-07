@@ -1,0 +1,20 @@
+services:
+    app:
+        build:
+            context: .
+            target: development
+        ports:
+            - "1312:1312"
+        volumes:
+            - ./src:/app/src
+            - ./package.json:/app/package.json
+            - ./package-lock.json:/app/package-lock.json
+            - ./tsconfig.json:/app/tsconfig.json
+            - ./jest.config.ts:/app/jest.config.ts
+            - ./babel.config.js:/app/babel.config.js
+            - ./database.sqlite:/app/database.sqlite
+        environment:
+            - NODE_ENV=development
+            - DEBUG=*
+            - PORT=1312
+        command: npm start

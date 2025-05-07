@@ -1,0 +1,14 @@
+services:
+    app:
+        build:
+            context: .
+            target: production
+        ports:
+            - "1234:1234"
+        environment:
+            - NODE_ENV=production
+            - DEBUG=app:*
+            - PORT=1234
+        volumes:
+            - ./database.sqlite:/app/database.sqlite
+        command: npm run start:prod
