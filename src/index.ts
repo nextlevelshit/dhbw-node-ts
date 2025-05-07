@@ -7,9 +7,9 @@ const logger = debug("app:i:index");
 const verbose = debug("app:v:index");
 const error = debug("app:e:index");
 
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
-
+/**
+ * Main entry point for the application
+ */
 verbose("starting");
 
 App.bootstrap()
@@ -52,3 +52,9 @@ App.bootstrap()
 		error(e);
 		failOnShutdown(e);
 	});
+
+/**
+ * Gracefully shutdown the application
+ */
+process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("SIGTERM", () => shutdown("SIGTERM"));

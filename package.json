@@ -17,7 +17,7 @@
 		"exec": "ts-node ./src/index.ts",
 		"env": {
 			"DEBUG": "*",
-			"PORT": 13000,
+			"PORT": 1312,
 			"NODE_ENV": "development"
 		},
 		"watch": [

@@ -13,8 +13,8 @@ export const App = new WebApplicationImpl({port});
 /**
  * Shutdown the application gracefully
  */
-export const shutdown = () => {
-	verbose("> SIGINT/SIGTERM");
+export const shutdown = (signal = "SIGINT/SIGTERM") => {
+	verbose(`> ${signal} received, shutting down`);
 	App.teardown()
 		.then(() => process.exit(0))
 		.catch(failOnShutdown);
