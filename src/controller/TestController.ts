@@ -1,7 +1,7 @@
 import {Request} from "express";
 import {RouteController} from "../config/types";
 
-export class TestController implements RouteController<unknown> {
+export class TestController implements RouteController<any> {
 	async create(request: Request) {
 		return `this is this body ${JSON.stringify(request.body)}`;
 	}

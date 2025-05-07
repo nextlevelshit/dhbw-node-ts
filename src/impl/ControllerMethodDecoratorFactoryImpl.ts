@@ -16,7 +16,7 @@ export const ControllerMethodDecoratorFactoryImpl: ControllerMethodDecoratorFact
 			routes.push({
 				path,
 				method,
-				action: action as keyof Omit<RouteController<unknown>, "repository">,
+				action: action as keyof Omit<RouteController<any>, "repository">,
 			});
 
 			Reflect.defineMetadata(routesKey, routes, target.constructor);
