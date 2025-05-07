@@ -22,5 +22,5 @@ export interface WebApplication {
 	/**
 	 * Mount routes to express application
 	 */
-	attachRoutes(routes: Route[], controller: RouteController<unknown>): void;
+	attachRoutes(routes: Route[], controller: RouteController<any>): void;
 }

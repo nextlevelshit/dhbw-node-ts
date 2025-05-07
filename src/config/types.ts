@@ -1,11 +1,11 @@
 import {Request, Response} from "express";
-import {Repository} from "typeorm";
+import {Repository, ObjectLiteral} from "typeorm";
 
 /**
  * Controller interface for controllers.
  * It provides basic CRUD operations.
  */
-export interface RouteController<T> {
+export interface RouteController<T extends ObjectLiteral> {
 	readonly repository?: Repository<T>;
 	/**
 	 * Fetches all instances of T.
@@ -69,5 +69,5 @@ export interface Route {
 	/**
 	 * Action to be performed for the route.
 	 */
-	action: keyof Omit<RouteController<unknown>, "repository">;
+	action: keyof Omit<RouteController<any>, "repository">;
 }

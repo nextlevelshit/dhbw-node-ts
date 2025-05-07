@@ -6,7 +6,7 @@ import {RouteController, Route} from "../config/types";
 describe("WebApplicationImpl", () => {
 	let dataSourceMock: jest.Mocked<DataSource>;
 	let app: WebApplicationImpl;
-	let controllerMock: jest.Mocked<RouteController<unknown>>;
+	let controllerMock: jest.Mocked<RouteController<any>>;
 	let routes: Route[];
 
 	beforeEach(async () => {
@@ -20,7 +20,7 @@ describe("WebApplicationImpl", () => {
 			one: jest.fn(),
 			save: jest.fn(),
 			remove: jest.fn(),
-		} as unknown as jest.Mocked<RouteController<unknown>>;
+		} as unknown as jest.Mocked<RouteController<any>>;
 
 		routes = [
 			{
@@ -59,6 +59,7 @@ describe("WebApplicationImpl", () => {
 	describe("attachRoutes", () => {
 		it("should attach routes to the application", async () => {
 			app.attachRoutes(controllerMock, routes);
+			// @ts-expect-error
 			controllerMock.all.mockResolvedValue("Hello, World!");
 
 			const response = await request(app.express).get("/");

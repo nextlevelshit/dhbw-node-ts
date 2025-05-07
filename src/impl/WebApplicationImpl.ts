@@ -1,5 +1,5 @@
 import {WebApplication, WebApplicationOptions} from "../io/WebApplication";
-import express, {Express} from "express";
+import express, {Request, Response} from "express";
 import bodyParser from "body-parser";
 import debug from "debug";
 import {Server} from "node:net";
@@ -10,10 +10,10 @@ const verbose = debug("app:v:web-application");
 const error = debug("app:e:web-application");
 
 export class WebApplicationImpl implements WebApplication {
-	private app: Express;
-	private server: Server;
+	private readonly app = express();
+	private server?: Server;
 
-	get express(): Express {
+	get express(): any {
 		return this.app;
 	}
 
@@ -55,7 +55,6 @@ export class WebApplicationImpl implements WebApplication {
 
 	private async bootstrapExpress() {
 		verbose("bootstrapping application");
-		this.app = express();
 		this.app.use(bodyParser.json());
 		this.app.set("x-powered-by", false);
 		this.server = this.app.listen(this.options.port);
@@ -63,12 +62,16 @@ export class WebApplicationImpl implements WebApplication {
 	}
 
 	private async teardownDataSource() {
+		if (!this.options.dataSource) {
+			verbose("no data source connection to close");
+			return;
+		}
 		await this.options.dataSource.destroy();
 		verbose("closed data source connection successfully");
 	}
 
 	private teardownExpress() {
-		this.server.close();
+		this.server?.close();
 		verbose("closed server connection gracefully");
 	}
 
@@ -77,22 +80,27 @@ export class WebApplicationImpl implements WebApplication {
 	 * @param controller
 	 * @param routes - The routes to attach
 	 */
-	attachRoutes(controller: RouteController<unknown>, routes: Route[]) {
+	attachRoutes(controller: RouteController<any>, routes: Route[]) {
 		if (!routes) {
 			logger("no routes to attach");
 			return;
 		}
 
+		if (!this.app) {
+			logger("no app mounted");
+			return;
+		}
+
 		logger(`creating ${routes.length} routes`);
 		routes.forEach((route) => {
-			this.app[route.method](route.path, async (req, res) => {
+			this.app![route.method](route.path, async (req: Request, res: Response) => {
 				verbose(`> ${route.method.toUpperCase()} ${route.path}`);
 				try {
 					const result = await controller[route.action](req, res);
 					verbose("<", result);
 					res.json(result);
-				} catch (e) {
-					logger("|", e.message);
+				} catch (e: any) {
+					error("|", e?.message);
 					res.status(500).send(e.message ?? "Internal server error");
 				}
 			});
