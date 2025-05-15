@@ -3,8 +3,10 @@ services:
         build:
             context: .
             target: development
-        ports:
-            - "1312:1312"
+        # Don't expose the port directly to the host anymore
+        # We'll access it through Caddy
+        # ports:
+        #     - "1312:1312"
         volumes:
             - ./src:/app/src
             - ./package.json:/app/package.json
@@ -12,9 +14,49 @@ services:
             - ./tsconfig.json:/app/tsconfig.json
             - ./jest.config.ts:/app/jest.config.ts
             - ./babel.config.js:/app/babel.config.js
-            - ./database.sqlite:/app/database.sqlite
         environment:
             - NODE_ENV=development
             - DEBUG=*
             - PORT=1312
+            - DATABASE_URL=postgres://postgres:postgres@postgres:5432/app
         command: npm start
+        depends_on:
+            - postgres
+        networks:
+            - data
+            - internal
+
+    caddy:
+        image: caddy:2
+        ports:
+            - "1312:80"
+            - "1313:443"
+        volumes:
+            - ./Caddyfile:/etc/caddy/Caddyfile
+            - caddy_data:/data
+            - caddy_config:/config
+        networks:
+            - public
+            - internal
+
+    postgres:
+        image: postgres:16
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=app
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - data
+
+volumes:
+    caddy_data:
+    caddy_config:
+    postgres_data:
+
+networks:
+    internal:
+    data:
+    public:
+        driver: bridge

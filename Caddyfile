@@ -1,0 +1,20 @@
+localhost {
+	encode zstd gzip
+	log {
+		output stdout
+		format console
+	}
+
+#	@backend {
+#		path /api /api/*
+#	}
+#
+#	handle @backend {
+#		reverse_proxy backend:1337
+#	}
+
+	# Handle main site (app)
+	handle_path /* {
+		reverse_proxy app:1312
+	}
+}
