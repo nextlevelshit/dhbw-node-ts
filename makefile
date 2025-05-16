@@ -24,7 +24,7 @@ down:
 
 # Restart the application
 restart:
-	docker compose restart
+	docker compose restart --remove-orphans --force-recreate
 
 # Build the application
 build:

@@ -6,9 +6,9 @@ services:
         environment:
             - NODE_ENV=production
             - DEBUG=app:*
-            - PORT=1234
+            - PORT=1312
             - DATABASE_URL=postgres://postgres:postgres@postgres:5432/app
-        command: npm run start:prod
+        command: npm run start.prod
         depends_on:
             - postgres
         networks:

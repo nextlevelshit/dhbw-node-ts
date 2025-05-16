@@ -5,13 +5,13 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"start": "nodemon",
-		"start:prod": "PORT=1234 NODE_ENV=production DEBUG=app:* node ./dist/index.js",
-		"build": "NODE_ENV=production tsc",
+		"start.prod": "node ./dist/index.js",
+		"build": "tsc",
 		"test": "jest",
-		"test:watch": "jest --watchAll",
+		"test.watch": "jest --watchAll",
 		"typeorm": "typeorm-ts-node-commonjs",
 		"lint": "prettier . --check",
-		"lint:fix": "prettier . --write"
+		"lint.fix": "prettier . --write"
 	},
 	"nodemonConfig": {
 		"exec": "ts-node ./src/index.ts",
